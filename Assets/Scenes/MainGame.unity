@@ -527,7 +527,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-<<<<<<< HEAD
 --- !u!1 &1014938319
 GameObject:
   m_ObjectHideFlags: 0
@@ -677,5 +676,3 @@ Transform:
   m_Father: {fileID: 1014938321}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-=======
->>>>>>> 43d0b50 (Do some stuff)
