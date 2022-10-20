@@ -21,7 +21,19 @@ public class WaveController : MonoBehaviour
             new(new()
             {
                 { _enemyTemplate1, 5 }
-            }, spawner, 4000f)
+            }, gameObject.AddComponent<EnemySpawnerController>(), 4000f),
+            new(new()
+            {
+                { _enemyTemplate1, 10 }
+            }, gameObject.AddComponent<EnemySpawnerController>(), 3000f),
+            new(new()
+            {
+                { _enemyTemplate1, 15 }
+            }, gameObject.AddComponent<EnemySpawnerController>(), 2000f),
+            new(new()
+            {
+                { _enemyTemplate1, 20 }
+            }, gameObject.AddComponent<EnemySpawnerController>(), 1000f)
         };
         _waveEnumerator = _waves.GetEnumerator();
     }
@@ -33,9 +45,8 @@ public class WaveController : MonoBehaviour
         {
             _isRunning = true;
             _waveEnumerator.MoveNext();
-
-            var currentWave = _waveEnumerator.Current;
-            currentWave.GraduallySpawnEnemies();
+            
+            _waveEnumerator.Current?.GraduallySpawnEnemies();
         }
     }
     
@@ -44,8 +55,8 @@ public class WaveController : MonoBehaviour
         var currentWave = _waveEnumerator.Current;
         currentWave.Spawner.DestroyEnemy(enemy, x =>
         {
-            // if (x.Count == 0)
-                // _isRunning = false;
+            if (!currentWave.Spawner.AreAnyEnemiesAlive)
+                _isRunning = false;
         });
     }
 }
