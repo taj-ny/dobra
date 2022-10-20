@@ -10,6 +10,8 @@ public sealed class PlayerController : MonoBehaviour
     private Vector2 _direction;
     [SerializeField] private float _speed = 5f;
 
+    public int Health { get; set; } = 100;
+
     private void Start()
     {
         _rigidBody = GetComponent<Rigidbody2D>();
