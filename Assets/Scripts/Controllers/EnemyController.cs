@@ -10,7 +10,6 @@ public sealed class EnemyController : MonoBehaviour
     [SerializeField]
     private WaveController _waveController;
 
-
     void Update()
     {
         var direction = new Vector2(1f, 0);

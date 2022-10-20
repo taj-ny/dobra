@@ -30,7 +30,7 @@ public sealed class EnemySpawnerController : MonoBehaviour
         StartCoroutine(CoSpawnEnemy(enemyTemplate, interval, () =>
         {
             currentCount++;
-            return currentCount >= count;
+            return count > currentCount;
         }));
     }
 

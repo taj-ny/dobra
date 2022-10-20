@@ -15,7 +15,7 @@ public class WaveController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        var spawner = GetComponent<EnemySpawnerController>();
+        var spawner = GameObject.Find("SpawnerObject").GetComponent<EnemySpawnerController>();
         _waves = new() // wtf
         {
             new(new()
