@@ -18,7 +18,8 @@ public sealed class EnemySpawnerController : MonoBehaviour
     {
         yield return new WaitForSeconds(interval / 1000);
 
-        _ = CreateEnemy(enemyTemplate, new(Random.Range(-5f, 5f), Random.Range(-8f, 8f)));
+        Vector3 v3Pos = Camera.main.ViewportToWorldPoint(new Vector3(1.1f, 0.5f, 0f));
+        _ = CreateEnemy(enemyTemplate, v3Pos);
 
         if (shouldContinue())
             StartCoroutine(CoSpawnEnemy(enemyTemplate, interval, shouldContinue));
