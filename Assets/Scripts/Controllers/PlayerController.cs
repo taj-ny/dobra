@@ -5,8 +5,8 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private Vector2 _direction;
-    private float _speed = 10f;
-    
+    [SerializeField] private float _speed = 5f;
+
     void Update()
     {
         _direction = RetriveMoveInput();
