@@ -1,30 +1,45 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemySpawnerController : MonoBehaviour
+using Random = UnityEngine.Random;
+
+public sealed class EnemySpawnerController : MonoBehaviour
 {
     private List<GameObject> _enemies;
-
-    [SerializeField]
-    private GameObject _enemy1;
 
     void Start()
     {
         _enemies = new();
     }
 
-    void Update()
-    {
-        StartCoroutine(CoSpawnEnemy(_enemy1, 4000f));
-    }
-
-    private IEnumerator CoSpawnEnemy(GameObject enemyTemplate, float interval)
+    private IEnumerator CoSpawnEnemy(GameObject enemyTemplate, float interval, Func<bool> shouldContinue)
     {
         yield return new WaitForSeconds(interval / 1000);
 
         _ = CreateEnemy(enemyTemplate, new(Random.Range(-5f, 5f), Random.Range(-8f, 8f)));
-        StartCoroutine(CoSpawnEnemy(enemyTemplate, interval));
+
+        if (shouldContinue())
+            StartCoroutine(CoSpawnEnemy(enemyTemplate, interval, shouldContinue));
+    }
+
+    public void QueueEnemySpawn(GameObject enemyTemplate, int count, float interval)
+    {
+        var currentCount = 0; 
+        StartCoroutine(CoSpawnEnemy(enemyTemplate, interval, () =>
+        {
+            currentCount++;
+            return currentCount >= count;
+        }));
+    }
+
+    public void DestroyEnemy(GameObject enemy, Action<IReadOnlyCollection<GameObject>> onRemovedCallback)
+    {
+        _enemies.Remove(enemy);
+        Destroy(enemy);
+
+        onRemovedCallback(_enemies);
     }
 
     private GameObject CreateEnemy(GameObject enemyTemplate, Vector2 position)
