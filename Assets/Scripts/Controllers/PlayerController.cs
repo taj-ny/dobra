@@ -6,7 +6,7 @@ using UnityEngine;
 public sealed class PlayerController : MonoBehaviour
 {
     private Rigidbody2D _rigidBody;
-    
+
     private Vector2 _direction;
     [SerializeField] private float _speed = 5f;
 
@@ -25,5 +25,6 @@ public sealed class PlayerController : MonoBehaviour
     {
         return new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
     }
+   
 
 }
