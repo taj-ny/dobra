@@ -20,7 +20,7 @@ public class WaveController : MonoBehaviour
         {
             new(new()
             {
-                { _enemyTemplate1, 1 }
+                { _enemyTemplate1, 5 }
             }, spawner, 4000f)
         };
         _waveEnumerator = _waves.GetEnumerator();
