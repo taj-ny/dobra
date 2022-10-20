@@ -65,5 +65,10 @@ public sealed class PlayerController : MonoBehaviour
                 break;
         }
         _healthBar.value = (float) Health / 100;
+
+        if (Health <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 }
