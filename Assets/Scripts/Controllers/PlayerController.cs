@@ -5,7 +5,7 @@ using UnityEngine;
 
 public sealed class PlayerController : MonoBehaviour
 {
-    private Rigidbody2D _rigidBody;
+    private Rigidbody2D _rbMovable;
     private Vector2 _direction;
 
     [SerializeField]
@@ -15,15 +15,15 @@ public sealed class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        _rigidBody = GetComponent<Rigidbody2D>();
+        _rbMovable = GetComponent<Rigidbody2D>();
     }
 
     void Update()
     {
-        //rotate to pointer with RotateToPointer
+        // Rotate to pointer with RotateToPointer
         RotateToPointer();
         _direction = RetriveMoveInput();
-        _rigidBody.AddForce(_direction * _speed, ForceMode2D.Force);
+        _rbMovable.AddForce(_direction * _speed, ForceMode2D.Force);
     }
     
     public Vector2 RetriveMoveInput()
@@ -33,10 +33,10 @@ public sealed class PlayerController : MonoBehaviour
     
     public void RotateToPointer()
     {
-        Vector3 _objectPos = Camera.main.WorldToScreenPoint(transform.position);
-        Vector3 _mousePos = Input.mousePosition;
-        _mousePos -= _objectPos;
-        float angle = Mathf.Atan2(_mousePos.y, _mousePos.x) * Mathf.Rad2Deg - 90;
+        var objectPos = Camera.main.WorldToScreenPoint(transform.position);
+        var mousePos = Input.mousePosition - objectPos;
+
+        var angle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg - 90;
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
     }
 }
