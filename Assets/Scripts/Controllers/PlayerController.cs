@@ -60,5 +60,10 @@ public sealed class PlayerController : MonoBehaviour
                 Health -= 15;
                 break;
         }
+
+        if (Health <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 }
