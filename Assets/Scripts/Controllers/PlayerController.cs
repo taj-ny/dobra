@@ -6,9 +6,10 @@ using UnityEngine;
 public sealed class PlayerController : MonoBehaviour
 {
     private Rigidbody2D _rigidBody;
-
     private Vector2 _direction;
-    [SerializeField] private float _speed = 5f;
+
+    [SerializeField]
+    private float _speed = 5f;
 
     public int Health { get; set; } = 100;
 

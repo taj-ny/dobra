@@ -4,18 +4,27 @@ using UnityEngine;
 
 public sealed class EnemyController : MonoBehaviour
 {
+    private Vector3 _boundingPosition;
+
     [SerializeField]
     private float _speed = 5f;
 
     [SerializeField]
     private WaveController _waveController;
 
-    [SerializeField] private PlayerController _playerController;
+    [SerializeField]
+    private PlayerController _playerController;
+
+    public bool ShouldDeleteOnBounds { get; private set; }
+
+    void Start()
+    {
+        _boundingPosition = new(Random.Range(0f, 5f), Random.Range(0f, 5f));
+    }
 
     void Update()
     {
-        var direction = new Vector2(1f, 0);
-        transform.Translate(direction * Time.deltaTime * _speed);
+        transform.position = Vector3.MoveTowards(transform.position, _boundingPosition, _speed * Time.deltaTime);
     }
 
     void OnCollisionEnter2D(Collision2D collision)
