@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class BulletColider : MonoBehaviour
+public class BulletController : MonoBehaviour
 {
-
     [SerializeField]
+    private Animation _impactAnimation = null;
+
     void OnCollisionEnter2D(Collision2D collision)
     {
-        Destroy(gameObject);
+        _impactAnimation.Play();
     }
 }

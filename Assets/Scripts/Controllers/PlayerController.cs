@@ -64,6 +64,6 @@ public sealed class PlayerController : MonoBehaviour
                 Health -= 15;
                 break;
         }
-        _healthBar.value = Health / 100;
+        _healthBar.value = (float) Health / 100;
     }
 }
