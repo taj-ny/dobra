@@ -19,7 +19,7 @@ public sealed class EnemyController : MonoBehaviour
     private float _speed = 5f;
     
     private WaveController _waveController;
-    
+
 
     public bool ShouldDeleteOnBounds { get; private set; }
 
@@ -59,6 +59,7 @@ public sealed class EnemyController : MonoBehaviour
             case "Player":
             case "Bullet":
                 Debug.Log("destroying");
+                ScoreManager.Instance.AddScore(10);
                 DestroySelf();
                 break;
 

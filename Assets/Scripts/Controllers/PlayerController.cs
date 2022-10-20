@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public sealed class PlayerController : MonoBehaviour
@@ -69,7 +70,7 @@ public sealed class PlayerController : MonoBehaviour
 
         if (Health <= 0)
         {
-            Destroy(gameObject);
+            SceneManager.LoadScene(sceneName:"DeathScreen");
         }
     }
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletColider : MonoBehaviour
+public sealed class BulletColider : MonoBehaviour
 {
 
     [SerializeField]
