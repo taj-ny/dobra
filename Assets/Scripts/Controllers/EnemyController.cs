@@ -8,9 +8,12 @@ using Random = UnityEngine.Random;
 public sealed class EnemyController : MonoBehaviour
 {
     private Vector3 _boundingPosition;
+
     private ShootingController _shootingController;
     private PlayerController _playerController;
     private bool _shootingRoutineStarted;
+
+    private Rect _maxBoundingPosition;
 
     [SerializeField]
     private float _speed = 5f;
@@ -25,13 +28,20 @@ public sealed class EnemyController : MonoBehaviour
         _waveController = GameObject.Find("WaveObject").GetComponent<WaveController>();
         _playerController = GameObject.Find("Player").GetComponent<PlayerController>();
         _shootingController = GetComponent<ShootingController>();
-        _boundingPosition = new(Random.Range(0f, 5f), Random.Range(0f, 5f));
+
+        var cameraBoundsController = Camera.main!.GetComponent<CameraBoundsController>();
+        var x = Random.Range(cameraBoundsController.TopLeft.x + 0.1f, cameraBoundsController.TopRight.x - 0.1f);
+        var y = Random.Range(cameraBoundsController.TopLeft.y + 0.1f, cameraBoundsController.BottomLeft.y - 0.1f);
+        _maxBoundingPosition = new(x + 0.1f, y + 0.1f, x - 0.2f, y - 0.2f);
     }
     
     void Update()
     {
         RotateToPlayer();
-
+        
+        var x = Random.Range(_maxBoundingPosition.x, _maxBoundingPosition.x + _maxBoundingPosition.width);
+        var y = Random.Range(_maxBoundingPosition.y, _maxBoundingPosition.y + _maxBoundingPosition.height);
+        _boundingPosition = new(x, y);
         transform.position = Vector3.MoveTowards(transform.position, _boundingPosition, _speed * Time.deltaTime);
         
         if (!ShouldDeleteOnBounds && !_shootingRoutineStarted)
@@ -52,6 +62,7 @@ public sealed class EnemyController : MonoBehaviour
 
             case "Player":
             case "Bullet":
+                Debug.Log("destroying");
                 DestroySelf();
                 break;
 

@@ -7,13 +7,18 @@ using Random = UnityEngine.Random;
 
 public sealed class EnemySpawnerController : MonoBehaviour
 {
-    [SerializeField] private CameraBoundsController _cameraBoundsController;
+    private CameraBoundsController _cameraBoundsController;
 
     private List<GameObject> _enemies;
+
+    private int _enemiesLeftToSpawn;
+
+    public bool AreAnyEnemiesAlive => _enemies.Count != 0 || _enemiesLeftToSpawn > 0;
 
     void Start()
     {
         _enemies = new();
+        _cameraBoundsController = Camera.main!.GetComponent<CameraBoundsController>();
     }
 
     private IEnumerator CoSpawnEnemy(GameObject enemyTemplate, float interval, Func<bool> shouldContinue)
@@ -37,11 +42,11 @@ public sealed class EnemySpawnerController : MonoBehaviour
 
     public void QueueEnemySpawn(GameObject enemyTemplate, int count, float interval)
     {
-        var currentCount = 0; 
+        _enemiesLeftToSpawn = count;
         StartCoroutine(CoSpawnEnemy(enemyTemplate, interval, () =>
         {
-            currentCount++;
-            return count > currentCount;
+            _enemiesLeftToSpawn--;
+            return _enemiesLeftToSpawn > 0;
         }));
     }
 
@@ -49,7 +54,7 @@ public sealed class EnemySpawnerController : MonoBehaviour
     {
         _enemies.Remove(enemy);
         Destroy(enemy);
-
+        
         onRemovedCallback(_enemies);
     }
 
