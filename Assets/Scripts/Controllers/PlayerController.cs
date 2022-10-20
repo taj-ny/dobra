@@ -6,8 +6,8 @@ using UnityEngine.UI;
 
 public sealed class PlayerController : MonoBehaviour
 {
-    private Rigidbody2D _rbMovable;
     private Vector2 _direction;
+    private Rigidbody2D _rbMovable;
     private ShootingController _shootingController;
 
     [SerializeField]
@@ -42,7 +42,7 @@ public sealed class PlayerController : MonoBehaviour
         return new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
     }
     
-    public void RotateToPointer()
+    private void RotateToPointer()
     {
         var objectPos = Camera.main.WorldToScreenPoint(transform.position);
         var mousePos = Input.mousePosition - objectPos;
@@ -54,10 +54,16 @@ public sealed class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.tag == "Enemy")
+        switch (collision.collider.tag)
         {
-            Health -= 50;
-            _healthBar.value = Health / 100;
+            case "Enemy":
+                Health -= 50;
+                break;
+
+            case "EnemyBullet":
+                Health -= 15;
+                break;
         }
+        _healthBar.value = Health / 100;
     }
 }
