@@ -35,7 +35,7 @@ public sealed class PlayerController : MonoBehaviour
         Vector3 _objectPos = Camera.main.WorldToScreenPoint(transform.position);
         Vector3 _mousePos = Input.mousePosition;
         _mousePos -= _objectPos;
-        float angle = Mathf.Atan2(_mousePos.y, _mousePos.x) * Mathf.Rad2Deg;
+        float angle = Mathf.Atan2(_mousePos.y, _mousePos.x) * Mathf.Rad2Deg - 90;
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
     }
 }
