@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public sealed class PlayerController : MonoBehaviour
 {
@@ -12,12 +13,15 @@ public sealed class PlayerController : MonoBehaviour
     [SerializeField]
     private float _speed = 5f;
 
+    private Slider _healthBar;
+
     public int Health { get; set; } = 100;
 
     private void Start()
     {
         _rbMovable = GetComponent<Rigidbody2D>();
         _shootingController = GetComponent<ShootingController>();
+        _healthBar = FindObjectOfType<Slider>();
     }
 
     void Update()
@@ -53,6 +57,7 @@ public sealed class PlayerController : MonoBehaviour
         if (collision.collider.tag == "Enemy")
         {
             Health -= 50;
+            _healthBar.value = Health / 100;
         }
     }
 }
