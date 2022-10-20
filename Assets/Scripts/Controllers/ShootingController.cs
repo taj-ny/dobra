@@ -2,27 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShootingController : MonoBehaviour
+public sealed class ShootingController : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject _projectilePrefab;
 
-    public GameObject ProjectilePrefab;
-    public Transform FirePoint;
+    [SerializeField]
+    private Transform _firingPoint;
 
-    // Update is called once per frame
-    void Update()
+    public void ShootProjectile()
     {
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
-        {
-            Shoot();
-        }
+        var projectile = Instantiate(_projectilePrefab, _firingPoint.position, _firingPoint.rotation);
+        var rigidbody = projectile.GetComponent<Rigidbody2D>();
+
+        rigidbody.AddForce(_firingPoint.up * 15, ForceMode2D.Impulse);
     }
-
-    void Shoot()
-    {
-        var projectile = Instantiate(ProjectilePrefab, FirePoint.position, FirePoint.rotation);
-        var rb = projectile.GetComponent<Rigidbody2D>();
-        rb.AddForce(FirePoint.up * 15, ForceMode2D.Impulse);
-    }
-
-
 }
