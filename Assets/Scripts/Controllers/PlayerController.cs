@@ -10,7 +10,8 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         _direction = RetriveMoveInput();
-        transform.Translate(_direction * Time.deltaTime * _speed);
+        GetComponent<Rigidbody2D>().AddForce(_direction * _speed, ForceMode2D.Force);
+        // transform.Translate(_direction * Time.deltaTime * _speed);
     }
     
     public Vector2 RetriveMoveInput()
