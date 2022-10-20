@@ -1,6 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+using Random = UnityEngine.Random;
 
 public sealed class EnemyController : MonoBehaviour
 {
@@ -8,10 +11,9 @@ public sealed class EnemyController : MonoBehaviour
 
     [SerializeField]
     private float _speed = 5f;
-
-    [SerializeField]
+    
     private WaveController _waveController;
-
+    
     [SerializeField]
     private PlayerController _playerController;
 
@@ -19,9 +21,11 @@ public sealed class EnemyController : MonoBehaviour
 
     void Start()
     {
+        _waveController = GameObject.Find("WaveObject").GetComponent<WaveController>();
+        _playerController = GameObject.Find("Player").GetComponent<PlayerController>();
         _boundingPosition = new(Random.Range(0f, 5f), Random.Range(0f, 5f));
     }
-
+    
     void Update()
     {
         RotateToPlayer();
@@ -30,15 +34,32 @@ public sealed class EnemyController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.collider.name == "Player" && _playerController.Health > 0)
+        Debug.Log(collision.collider.name);
+        switch (collision.collider.tag)
         {
-            _playerController.Health--;
-            Debug.Log(_playerController.Health); // TODO: Display health on the UI
+            case "Enemy":
+                Physics2D.IgnoreCollision(collision.collider, collision.otherCollider);
+                break;
+            case "Player":
+            case "Bullet":
+                DestroySelf();
+                break;
+            case "MainCamera":
+                Physics2D.IgnoreCollision(collision.collider, collision.otherCollider);
+                if (!ShouldDeleteOnBounds)
+                {
+                    ShouldDeleteOnBounds = true;
+                    return;
+                }
+            
+                Invoke(nameof(DestroySelf), 1f);
+                break;
         }
-        //if (collision)
-        //{
-            _waveController.RemoveEnemy(gameObject);
-        //}
+    }
+
+    private void DestroySelf()
+    {
+        _waveController.RemoveEnemy(gameObject);
     }
 
     public void RotateToPlayer()
