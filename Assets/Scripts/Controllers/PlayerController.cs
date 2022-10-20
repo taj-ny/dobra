@@ -7,6 +7,7 @@ public sealed class PlayerController : MonoBehaviour
 {
     private Rigidbody2D _rbMovable;
     private Vector2 _direction;
+    private ShootingController _shootingController;
 
     [SerializeField]
     private float _speed = 5f;
@@ -16,6 +17,7 @@ public sealed class PlayerController : MonoBehaviour
     private void Start()
     {
         _rbMovable = GetComponent<Rigidbody2D>();
+        _shootingController = GetComponent<ShootingController>();
     }
 
     void Update()
@@ -24,6 +26,11 @@ public sealed class PlayerController : MonoBehaviour
         RotateToPointer();
         _direction = RetriveMoveInput();
         _rbMovable.AddForce(_direction * _speed, ForceMode2D.Force);
+
+        if (Input.GetMouseButtonDown(0) || Input.GetKeyDown(KeyCode.Space))
+        {
+            _shootingController.ShootProjectile();
+        }
     }
     
     public Vector2 RetriveMoveInput()
@@ -39,6 +46,7 @@ public sealed class PlayerController : MonoBehaviour
         var angle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg - 90;
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
     }
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
