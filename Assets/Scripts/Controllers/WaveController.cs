@@ -44,8 +44,8 @@ public class WaveController : MonoBehaviour
         var currentWave = _waveEnumerator.Current;
         currentWave.Spawner.DestroyEnemy(enemy, x =>
         {
-            if (x.Count == 0)
-                _isRunning = false;
+            // if (x.Count == 0)
+                // _isRunning = false;
         });
     }
 }
