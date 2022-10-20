@@ -39,4 +39,12 @@ public sealed class PlayerController : MonoBehaviour
         var angle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg - 90;
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.tag == "Enemy")
+        {
+            Health -= 50;
+        }
+    }
 }

@@ -7,6 +7,8 @@ using Random = UnityEngine.Random;
 
 public sealed class EnemySpawnerController : MonoBehaviour
 {
+    [SerializeField] private CameraBoundsController _cameraBoundsController;
+
     private List<GameObject> _enemies;
 
     void Start()
@@ -18,10 +20,18 @@ public sealed class EnemySpawnerController : MonoBehaviour
     {
         yield return new WaitForSeconds(interval / 1000);
 
-        Vector3 v3Pos = Camera.main.ViewportToWorldPoint(new Vector3(1.1f, 0.5f, 0f));
-        _ = CreateEnemy(enemyTemplate, v3Pos);
+        var cameraRect = new Rect(_cameraBoundsController.TopLeft.x, _cameraBoundsController.TopLeft.y,
+            _cameraBoundsController.TopRight.x - _cameraBoundsController.TopLeft.x,
+            _cameraBoundsController.BottomLeft.y - _cameraBoundsController.TopLeft.y);
+        var screenRect = new Rect(cameraRect.x - 10, cameraRect.y - 10, cameraRect.width + 20, cameraRect.height + 20);
+        
+        var x = Random.Range(screenRect.xMin, screenRect.xMax - cameraRect.width);
+        var y = Random.Range(screenRect.yMin, screenRect.yMax - cameraRect.height);
+        x = x > cameraRect.xMin ? x + cameraRect.width : x;
+        y = y > cameraRect.yMin ? x + cameraRect.height : y;
+         _= CreateEnemy(enemyTemplate, new(x, y));
 
-        if (shouldContinue())
+         if (shouldContinue())
             StartCoroutine(CoSpawnEnemy(enemyTemplate, interval, shouldContinue));
     }
 
